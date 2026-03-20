@@ -1,0 +1,5 @@
+{
+  "name": "Touring Stage Online",
+  "description": "A sandbox online board game simulator based on the \u0027Touring Stage\u0027 rulebook, featuring interactive tiles, towers, character pawns, and battery management with a pixel-art aesthetic.",
+  "requestFramePermissions": []
+}
