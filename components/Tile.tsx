@@ -19,6 +19,14 @@ export const Tile: React.FC<TileProps> = ({
 }) => {
   const isTerminal = state.type === 'terminal';
   const towerStack = state.towers;
+  const hasTower = towerStack.length > 0;
+
+  // 计算被覆盖的棋子数量
+  const coveredGroundPieces = hasTower ? state.groundPieces.length : 0;
+  const coveredTowerPieces = towerStack.length > 1 
+    ? towerStack.slice(0, -1).reduce((acc, t) => acc + t.pieces.length, 0)
+    : 0;
+  const totalCovered = coveredGroundPieces + coveredTowerPieces;
 
   const handleTileClick = (e: React.MouseEvent) => {
     // 只有在没有选中实体时，点击格子背景才可能有其他逻辑（如查看详情）
@@ -52,15 +60,18 @@ export const Tile: React.FC<TileProps> = ({
       <div className="absolute bottom-1 right-1 w-1 h-1 bg-black/10"></div>
 
       {/* 格子标签 - 始终位于上层但层级低于放置按钮 */}
-      <span className="absolute -top-3 -left-3 bg-black text-white text-[9px] px-2 py-0.5 font-bold z-40 pixel-border uppercase">
-        {`${index}号回廊`}
+      <span className={`absolute -top-3 -left-3 text-white text-[9px] px-2 py-0.5 font-bold z-40 pixel-border uppercase ${isTerminal ? 'bg-red-600' : 'bg-black'}`}>
+        {isTerminal ? '终端舞台' : `${index}号回廊`}
       </span>
 
       {/* 舞台混乱指示器 */}
-      {(state.groundPieces.length > 0 && towerStack.length > 0) && (
-        <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] w-6 h-6 flex items-center justify-center border-2 border-black z-40 font-black animate-pulse shadow-lg">
-          !
-          <div className="absolute -bottom-8 right-0 bg-black text-[8px] whitespace-nowrap px-1 hidden group-hover:block">舞台混乱: {state.groundPieces.length}人</div>
+      {totalCovered > 0 && (
+        <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] w-7 h-7 flex flex-col items-center justify-center border-2 border-black z-40 font-black animate-pulse shadow-lg">
+          <span className="leading-none">!</span>
+          <span className="text-[6px] leading-none">CHAOS</span>
+          <div className="absolute -bottom-8 right-0 bg-black text-white text-[8px] whitespace-nowrap px-2 py-1 hidden group-hover:block border border-white/20 z-50">
+            舞台混乱: {totalCovered} 个角色被覆盖
+          </div>
         </div>
       )}
 
@@ -76,7 +87,10 @@ export const Tile: React.FC<TileProps> = ({
         {/* 地面棋子 */}
         <div 
           className="flex flex-wrap gap-0.5 justify-center items-center z-10 transition-opacity"
-          style={{ opacity: towerStack.length > 0 ? 0.3 : 1 }}
+          style={{ 
+            opacity: hasTower ? 0 : 1,
+            pointerEvents: hasTower ? 'none' : 'auto'
+          }}
         >
           {state.groundPieces.map(piece => (
             <CharacterPawn 
@@ -119,8 +133,14 @@ export const Tile: React.FC<TileProps> = ({
                 {isTerminalTower && <span className="text-[7px]">👑</span>}
               </div>
               
-              <div className="flex flex-wrap gap-0.5 justify-center items-center">
-                {tower.pieces.map(piece => (
+              <div 
+                className="flex flex-wrap gap-0.5 justify-center items-center transition-opacity"
+                style={{ 
+                  opacity: tIdx < towerStack.length - 1 ? 0 : 1,
+                  pointerEvents: tIdx < towerStack.length - 1 ? 'none' : 'auto'
+                }}
+              >
+                {tower.pieces.map((piece) => (
                   <CharacterPawn 
                     key={piece.id} 
                     type={piece.type} 

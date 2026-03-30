@@ -31,7 +31,7 @@ export const CHARACTERS: Record<CharacterType, CharacterData> = {
     avatar: '🎨',
     color: '#c19a82',
     positiveBuff: '独步莫若同行：当绘名与至少一名其他角色位于同一「巡演塔」上时，在回合结束可将一空「电池」充满。',
-    negativeBuff: '无法填满的淡色：当绘名陷入「舞台混乱」后，需要额外消耗一满「电池」才能被解救。若无多余满「电池」，则需要等待「电池」充满。',
+    negativeBuff: '无法填满的淡色：当绘名陷入「舞台混乱」时，需要额外消耗一「电池」才能被解救。若无多余「电池」，则解除混乱的棋子需要等待一回合才能移动。',
     skill: '其绘名为：消耗 X 电池。选择任意一座「巡演塔」，使其前进 x 格。',
     cost: 'X 电池'
   },
@@ -63,7 +63,7 @@ export const CHARACTERS: Record<CharacterType, CharacterData> = {
     displayName: 'KAITO',
     avatar: '🧣',
     color: '#82b0e2',
-    positiveBuff: '最棒的舞台：当 Kaito 位于「巡演塔」最上方时，该「巡演塔」本回合不会受到事件卡影响。',
+    positiveBuff: '最棒的舞台：当kaito位于「巡演塔」最上方时，该「巡演塔」及塔上角色本回合不会受到事件卡影响。',
     negativeBuff: '凋落的花朵：Kaito 使用技能后，本回合不能再进行移动。',
     skill: '引导之手：消耗 2 电池. 选择任意两名角色，将其中一人移动至另一人所在位置（不可两名角色都选择自己）。',
     cost: '2 电池'
@@ -73,23 +73,23 @@ export const CHARACTERS: Record<CharacterType, CharacterData> = {
 export const INITIAL_EVENTS: EventCard[] = [
   // 18 Basic Events
   { id: 'e1', title: '站位！站位！', description: '选择任意一名角色，与其交换位置。（不可选择在「终端舞台」的角色）' },
-  { id: 'e2', title: '即兴合唱！', description: '熟悉的声音，还有那跳动着的双马尾！获得神秘人帮助，获得一个满「电池」。' },
+  { id: 'e2', title: '即兴合唱！', description: '获得神秘人帮助，获得一满「电池」。' },
   { id: 'e3', title: '备受好评', description: '掌声和欢呼浪潮般袭来，表演大获成功！可将自己的任一可见角色向前移动 1 格。' },
   { id: 'e4', title: '完美搭建', description: '选择任意一个被覆盖的「巡演塔」，移动该塔到任一「世界回廊」上。' },
-  { id: 'e5', title: '气氛逐渐火热', description: '增加一次掷骰子次数。' },
+  { id: 'e5', title: '气氛逐渐火热', description: '增加一次行动次数。' },
   { id: 'e6', title: '灵感大爆发', description: '下一次使用技能时，不消耗电池。' },
-  { id: 'e7', title: '后台通行证', description: '抬起一座被覆盖的「巡演塔」，将自己陷入「舞台混乱」的角色移动至最上方的塔上。' },
+  { id: 'e7', title: '后台通行证', description: '抬起一座被覆盖的「巡演塔」，将自己陷入「舞台混乱」的角色移动至最上方的塔上。（若抬起的塔中没有自己的角色，则该事件卡失效）' },
   { id: 'e8', title: '下午茶时间', description: '本回合内，增加一次角色移动次数。' },
   { id: 'e9', title: '这个布景不太妙', description: '选择一座「巡演塔」，本回合内不能被移动。' },
   { id: 'e10', title: '摸鱼进行时', description: '本回合立刻结束。' },
   { id: 'e11', title: '麦克风啸叫', description: '音量突然失控。自己所有位于「巡演塔」上的角色，后退一格。' },
   { id: 'e12', title: '灯光事故', description: '下一次登上「终端舞台」的角色，不获得「电池」。' },
-  { id: 'e13', title: '灵感枯竭中', description: '下一次使用技能时，额外消耗 2 满「电池」。' },
-  { id: 'e14', title: '鸦雀无声', description: '将自己所有在「巡演塔」上的角色往后移动一格。' },
+  { id: 'e13', title: '灵感枯竭中', description: '下一次使用技能时，额外消耗 2 「电池」。' },
+  { id: 'e14', title: '鸦雀无声', description: '将自己所有在「巡演塔」上的可见角色往后移动一格。' },
   { id: 'e15', title: '临时维修通知', description: '选择自己角色所在的一座「巡演塔」，该塔和其上的所有角色下一回合不可移动。' },
   { id: 'e16', title: '突发事故', description: '表演被迫中断，暂停行动一回合。' },
   { id: 'e17', title: '节奏被打乱', description: '本回合内，若有角色或塔进行移动，则移动格子数减一。' },
-  { id: 'e18', title: '体力条见底', description: '将一满「电池」变为空「电池」。' },
+  { id: 'e18', title: '体力条见底', description: '消耗1「电池」，若无满电池，则直接结束此回合。' },
 
   // 5 Team Events
   { id: 'te1', title: '来散散步吧', description: '当角色是 knd/mfy/ena，且与其中至少一名位于同一格时，可移动至相邻「巡演塔」；若三人同格，移至最近的「终端舞台」巡演塔。', isTeamEvent: true },

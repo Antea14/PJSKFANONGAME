@@ -8,9 +8,10 @@ interface CharacterPawnProps {
   isSelected?: boolean;
   onClick?: (e: React.MouseEvent) => void;
   size?: 'sm' | 'md';
+  style?: React.CSSProperties;
 }
 
-export const CharacterPawn: React.FC<CharacterPawnProps> = ({ type, isSelected, onClick, size = 'md' }) => {
+export const CharacterPawn: React.FC<CharacterPawnProps> = ({ type, isSelected, onClick, size = 'md', style }) => {
   const char = CHARACTERS[type];
   const dimension = size === 'md' ? 'w-10 h-10' : 'w-7 h-7';
   const fontSize = size === 'md' ? 'text-xl' : 'text-sm';
@@ -24,7 +25,7 @@ export const CharacterPawn: React.FC<CharacterPawnProps> = ({ type, isSelected, 
         ${isSelected ? 'ring-4 ring-yellow-400 -translate-y-2' : ''}
         pixel-shadow-sm
       `}
-      style={{ backgroundColor: char.color }}
+      style={{ backgroundColor: char.color, ...style }}
       title={char.displayName}
     >
       <span className={fontSize}>{char.avatar}</span>

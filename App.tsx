@@ -4,7 +4,6 @@ import { Board } from './components/Board.tsx';
 import { DiceRoller } from './components/DiceRoller.tsx';
 import { PlayerPanel } from './components/PlayerPanel.tsx';
 import { EventDeck } from './components/EventDeck.tsx';
-import { BatterySupply } from './components/BatterySupply.tsx';
 import { CHARACTERS, INITIAL_EVENTS, TILE_COUNT } from './constants.tsx';
 import { GameState, CharacterType, TileState, PlayerState, CharacterPiece, EventCard, SyncMessage } from './types.ts';
 
@@ -95,7 +94,7 @@ const App: React.FC = () => {
 
       return {
         id: i,
-        type: 'corridor',
+        type: i === 0 ? 'terminal' : 'corridor',
         towers: towers,
         groundPieces: []
       } as TileState;
@@ -696,7 +695,6 @@ const App: React.FC = () => {
               }
             }}
           />
-          <BatterySupply onGain={expandBatterySlot} onShrink={shrinkBatterySlot} />
         </div>
 
         <div 
